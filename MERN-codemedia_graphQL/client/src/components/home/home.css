@@ -1,0 +1,9 @@
+@import url('https://fonts.cdnfonts.com/css/keep-calm');
+
+* {
+  font-family: 'Keep Calm', sans-serif;
+}
+
+section {
+  border-radius: 50px;
+}
