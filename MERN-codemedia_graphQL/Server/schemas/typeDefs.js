@@ -42,14 +42,15 @@ const typeDefs = gql`
       language: String!
     ): Snippet
 
-    deleteSnippet(snippetID: ID!): Snippet
+    deleteSnippet(snippetId: ID!): Snippet
     
     editSnippet(
-      snippetID: ID!
+      snippetId: ID!
       code: String!
     ): Snippet
   }
 `;
 
 module.exports = typeDefs;
+
 

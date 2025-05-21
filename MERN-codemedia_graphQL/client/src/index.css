@@ -1,19 +1,75 @@
-
 @import url('https://fonts.cdnfonts.com/css/monesque');
-body {
 
+:root {
+  --bg-light: #F5EEDC;
+  --primary: #27548A;
+  --accent-dark: #183B4E;
+  --highlight: #DDA853;
+  --text-color: #27548A;
+}
+
+html, body {
+  font-family: 'Monesque', sans-serif !important;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-light) !important;
+  color: var(--text-color);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(168, 231, 155) !important;
 }
 
+/* Code Blocks */
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+/* Hyperlinks */
+a {
+  color: var(--highlight);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
 
-html, body{
-  font-family: 'Monesque', sans-serif !important
-                                                
+a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+/* Form Focus Highlight */
+.form-control:focus {
+  border-color: var(--highlight);
+  box-shadow: 0 0 0 0.2rem rgba(221, 168, 83, 0.25);
+}
+
+/* Button hover effect globally */
+button:hover,
+.btn:hover {
+  opacity: 0.95;
+  transition: all 0.3s ease;
+}
+
+/* Navbar Brand Text */
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--highlight) !important;
+}
+
+/* Form Labels */
+label {
+  color: var(--primary);
+}
+
+/* Optional: Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--highlight);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-light);
 }

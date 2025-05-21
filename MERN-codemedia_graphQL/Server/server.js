@@ -1,3 +1,6 @@
+// 
+
+
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const path = require('path');
@@ -11,7 +14,9 @@ const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(express.static('public'));
+
+// Serve static files from the React build folder
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 const startApolloServer = async () => {
   const server = new ApolloServer({
@@ -25,7 +30,12 @@ const startApolloServer = async () => {
     await server.start();
     server.applyMiddleware({ app });
 
-    // Attempt to open the database connection
+    // Catch-all route to serve React's index.html for unmatched routes
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+    });
+
+    // Wait for DB and then start server
     db.once('open', () => {
       app.listen(PORT, () => {
         console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`);
@@ -36,7 +46,6 @@ const startApolloServer = async () => {
     console.error('Error starting Apollo Server:', error);
   }
 
-  // Error handling if database connection fails
   db.on('error', (err) => {
     console.error('Database connection error:', err);
   });

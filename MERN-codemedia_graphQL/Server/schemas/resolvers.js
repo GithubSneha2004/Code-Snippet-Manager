@@ -77,10 +77,10 @@ const resolvers = {
       return snippet;
     },
 
-    editSnippet: async (parent, { snippetID, code }, context) => {
+    editSnippet: async (parent, { snippetId, code }, context) => {
       if (!context.user) throw new AuthenticationError('Not logged in');
       const snippet = await Snippet.findOneAndUpdate(
-        { _id: snippetID, createdBy: context.user._id },
+        { _id: snippetId, createdBy: context.user._id },
         { $set: { code } },
         { new: true }
       );
@@ -88,6 +88,8 @@ const resolvers = {
       return snippet;
     },
   },
+
 };
 
 module.exports = resolvers;
+

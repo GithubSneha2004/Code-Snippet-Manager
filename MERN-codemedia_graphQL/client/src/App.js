@@ -11,6 +11,9 @@ import auth from './utils/auth';
 import MySnippets from './components/MySnippets';
 import LoginReminder from './components/LoginReminder';
 import Logoutmsg from './components/Logoutmsg';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
+
 
 
 

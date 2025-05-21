@@ -15,9 +15,22 @@ const userSchema = new Schema(
       match: [/.+@.+\..+/, 'Must use a valid email address'],
     },
     password: {
-      type: String,
-      required: true,
+  type: String,
+  required: true,
+  validate: {
+    validator: function (value) {
+      const lengthCheck = value.length >= 8;
+      const upperCheck = /[A-Z]/.test(value);
+      const lowerCheck = /[a-z]/.test(value);
+      const numberCheck = /\d/.test(value);
+      const specialCheck = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+      return lengthCheck && upperCheck && lowerCheck && numberCheck && specialCheck;
     },
+    message:
+      'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.',
+  },
+},
+
     savedSnippets: [
       {
         type: Schema.Types.ObjectId,

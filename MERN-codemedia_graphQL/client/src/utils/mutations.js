@@ -1,3 +1,5 @@
+
+
 // mutations.js
 import { gql } from '@apollo/client';
 
@@ -54,13 +56,17 @@ export const ADD_SNIPPET = gql`
 
 export const DELETE_SNIPPET = gql`
   mutation deleteSnippet($snippetId: ID!) {
-    deleteSnippet(snippetId: $snippetId)
+    deleteSnippet(snippetId: $snippetId) {
+      _id
+      title
+    }
   }
 `;
 
+
 export const EDIT_SNIPPET = gql`
   mutation editSnippet($snippetId: ID!, $code: String!) {
-    editSnippet(snippetID: $snippetId, code: $code) {
+    editSnippet(snippetId: $snippetId, code: $code) {
       _id
       title
       code
@@ -70,3 +76,4 @@ export const EDIT_SNIPPET = gql`
     }
   }
 `;
+
