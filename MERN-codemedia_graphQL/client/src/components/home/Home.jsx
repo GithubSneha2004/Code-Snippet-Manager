@@ -5,7 +5,7 @@ import './home.css';
 
 export default function Home() {
   return (
-    <section className="bg-white dark:bg-gray-900 py-16">
+    <section data-testid="home-section" className="bg-white dark:bg-gray-900 py-16">
       <div className="container mx-auto flex flex-col-reverse lg:flex-row items-center justify-between px-6">
         
         {/* Left Side - Text */}

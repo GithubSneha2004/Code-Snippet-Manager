@@ -61,8 +61,9 @@ export default function CreateSnippet() {
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label className="form-label" style={{ color: '#183B4E' }}>Title</label>
+            <label htmlFor="title" className="form-label" style={{ color: '#183B4E' }}>Title</label>
             <input
+              id="title"
               name="title"
               type="text"
               className="form-control"
@@ -73,8 +74,9 @@ export default function CreateSnippet() {
           </div>
 
           <div className="mb-3">
-            <label className="form-label" style={{ color: '#183B4E' }}>Description</label>
+            <label htmlFor="description" className="form-label" style={{ color: '#183B4E' }}>Description</label>
             <textarea
+              id="description"
               name="description"
               rows="2"
               className="form-control"
@@ -84,8 +86,9 @@ export default function CreateSnippet() {
           </div>
 
           <div className="mb-3">
-            <label className="form-label" style={{ color: '#183B4E' }}>Language</label>
+            <label htmlFor="language" className="form-label" style={{ color: '#183B4E' }}>Language</label>
             <select
+              id="language"
               name="language"
               className="form-select"
               value={formData.language}
@@ -100,8 +103,9 @@ export default function CreateSnippet() {
           </div>
 
           <div className="mb-3">
-            <label className="form-label" style={{ color: '#183B4E' }}>Code</label>
+            <label htmlFor="code" className="form-label" style={{ color: '#183B4E' }}>Code</label>
             <textarea
+              id="code"
               name="code"
               rows="8"
               className="form-control"

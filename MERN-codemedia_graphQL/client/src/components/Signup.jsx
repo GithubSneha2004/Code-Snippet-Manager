@@ -138,6 +138,7 @@ export default function Signup() {
                         color: "#183B4E",
                       }}
                       type="button"
+                      data-testid="password-toggle"
                     >
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </Button>
@@ -171,6 +172,7 @@ export default function Signup() {
                         color: "#183B4E",
                       }}
                       type="button"
+                      data-testid="confirm-password-toggle"
                     >
                       {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </Button>

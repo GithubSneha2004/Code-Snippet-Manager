@@ -20,6 +20,7 @@ export default function Login() {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
+    if (showAlert) setShowAlert(false); // ✅ Hides alert on input change
   };
 
   const handleFormSubmit = async (event) => {
@@ -107,6 +108,7 @@ export default function Login() {
                     <Button
                       variant="light"
                       onClick={() => setShowPassword(!showPassword)}
+                      aria-label={showPassword ? 'Hide password' : 'Show password'} // ✅ Added for accessibility
                       style={{
                         marginLeft: "10px",
                         backgroundColor: "#DDA853",

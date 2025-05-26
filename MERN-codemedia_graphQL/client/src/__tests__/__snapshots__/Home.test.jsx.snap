@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home Component matches snapshot 1`] = `
+<div>
+  <section
+    class="bg-white dark:bg-gray-900 py-16"
+    data-testid="home-section"
+  >
+    <div
+      class="container mx-auto flex flex-col-reverse lg:flex-row items-center justify-between px-6"
+    >
+      <div
+        class="w-full lg:w-1/2 mt-10 lg:mt-0"
+      >
+        <h1
+          class="text-4xl font-extrabold text-gray-900 dark:text-white mb-4 text-center lg:text-left"
+        >
+          <span
+            class="text-blue-600"
+          >
+            Code Snippet Manager
+          </span>
+        </h1>
+        <p
+          class="mb-4 text-gray-700 dark:text-gray-300 text-lg text-justify"
+        >
+          Welcome to 
+          <strong>
+            Code Snippet Manager
+          </strong>
+          , the ultimate tool for organizing and storing your code snippets. Whether you're a developer, designer, or hobbyist, our app will help you keep your code snippets organized and easily accessible.
+        </p>
+        <p
+          class="mb-6 text-gray-700 dark:text-gray-300 text-lg text-justify"
+        >
+          Start managing your code snippets today and experience the benefits of an efficient workflow. Sign up or log in to get started!
+        </p>
+        <div
+          class="text-center lg:text-left"
+        >
+          <a
+            class="inline-flex items-center justify-center px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-lg transition duration-300"
+            href="/signup"
+          >
+            Get Started
+          </a>
+        </div>
+      </div>
+      <div
+        class="w-full lg:w-1/2 flex justify-center"
+      >
+        <img
+          alt="Code Snippet Illustration"
+          class="max-w-full h-auto rounded-xl shadow-lg"
+          src="homeimage-removebg-preview.png"
+        />
+      </div>
+    </div>
+  </section>
+</div>
+`;

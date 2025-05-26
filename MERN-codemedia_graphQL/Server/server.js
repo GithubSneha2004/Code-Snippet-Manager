@@ -18,6 +18,11 @@ app.use(express.json());
 // Serve static files from the React build folder
 app.use(express.static(path.join(__dirname, '../client/build')));
 
+// Catch-all route to serve React's index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
+
 const startApolloServer = async () => {
   const server = new ApolloServer({
     typeDefs,
@@ -51,4 +56,7 @@ const startApolloServer = async () => {
   });
 };
 
-startApolloServer();
+
+  startApolloServer();
+
+

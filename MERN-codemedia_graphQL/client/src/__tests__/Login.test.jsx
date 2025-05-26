@@ -4,7 +4,6 @@ import Login from '../components/Login';
 import { LOGIN_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
-
 // Mock Auth utility
 jest.mock('../utils/auth', () => ({
   login: jest.fn()
@@ -66,8 +65,9 @@ describe('Login Component', () => {
         <Login />
       </MockedProvider>
     );
+
     const passwordInput = screen.getByPlaceholderText(/password/i);
-    const toggleBtn = screen.getByRole('button', { name: '' }); // no accessible name
+    const toggleBtn = screen.getByRole('button', { name: /show password|hide password/i });
 
     expect(passwordInput.type).toBe('password');
 
@@ -117,6 +117,37 @@ describe('Login Component', () => {
 
     await waitFor(() =>
       expect(screen.getByText(/invalid credentials/i)).toBeInTheDocument()
+    );
+  });
+
+  test('hides alert when user changes input after error', async () => {
+    render(
+      <MockedProvider mocks={[mockError]} addTypename={false}>
+        <Login />
+      </MockedProvider>
+    );
+
+    // Trigger login error first
+    fireEvent.change(screen.getByPlaceholderText(/enter email/i), {
+      target: { value: 'wrong@example.com' },
+    });
+    fireEvent.change(screen.getByPlaceholderText(/password/i), {
+      target: { value: 'wrongpass' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /submit/i }));
+
+    // Wait for error alert to appear
+    await waitFor(() =>
+      expect(screen.getByText(/invalid credentials/i)).toBeInTheDocument()
+    );
+
+    // Now change input to hide alert
+    fireEvent.change(screen.getByPlaceholderText(/enter email/i), {
+      target: { value: 'right@example.com' },
+    });
+
+    await waitFor(() =>
+      expect(screen.queryByText(/invalid credentials/i)).not.toBeInTheDocument()
     );
   });
 });
