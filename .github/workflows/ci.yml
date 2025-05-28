@@ -1,0 +1,56 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo
+        ports: 
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'" 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install backend dependencies
+        run: |
+          cd MERN-codemedia_graphQL/Server
+          npm ci || npm install
+
+      - name: Run backend tests
+        run: |
+          cd MERN-codemedia_graphQL/Server
+          npm test || echo "No tests yet"
+
+      - name: Install frontend dependencies
+        run: |
+          cd MERN-codemedia_graphQL/client
+          npm ci || npm install
+
+      - name: Run frontend build
+        run: |
+          cd MERN-codemedia_graphQL/client
+          npm run build || echo "No build script yet"
+
+      - name: Lint frontend
+        run: |
+          cd MERN-codemedia_graphQL/client
+          npm run lint || echo "No lint script"

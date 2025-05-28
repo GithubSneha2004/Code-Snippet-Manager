@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src\components\CreateSnippet.jsx</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../prettify.css">
+    <link rel="stylesheet" href="../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header low">
+    <h1>Code coverage report for <span class="entity">src\components\CreateSnippet.jsx</span></h1>
+    <h2>
+        Statements: <span class="metric">0% <small>(0 / 20)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">0% <small>(0 / 6)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">0% <small>(0 / 5)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">0% <small>(0 / 18)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">src/components/</a> &#187; CreateSnippet.jsx</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { ADD_SNIPPET } from '../utils/mutations';
+import Auth from '../utils/auth';
+import { GET_ME } from '../utils/queries';
+&nbsp;
+export default function CreateSnippet() <span class="fstat-no" title="function not covered" >{</span>
+  const [formData, setFormData] = <span class="cstat-no" title="statement not covered" >useState({</span>
+    title: '',
+    description: '',
+    language: '',
+    code: '',
+  });
+  const [message, setMessage] = <span class="cstat-no" title="statement not covered" >useState('');</span>
+&nbsp;
+  const [saveSnippet] = <span class="cstat-no" title="statement not covered" >useMutation(ADD_SNIPPET, {</span>
+    refetchQueries: [{ query: GET_ME }],
+  });
+&nbsp;
+  const languageOptions = <span class="cstat-no" title="statement not covered" >[</span>
+    'JavaScript', 'Python', 'Java', 'C++', 'HTML', 'CSS', 'React', 'Node.js'
+  ];
+&nbsp;
+  const handleChange = <span class="cstat-no" title="statement not covered" >(event) =&gt; <span class="fstat-no" title="function not covered" >{</span></span>
+    const { name, value } = <span class="cstat-no" title="statement not covered" >event.target;</span>
+<span class="cstat-no" title="statement not covered" >    setFormData({ ...formData, [name]: value });</span>
+  };
+&nbsp;
+  const handleSubmit = <span class="cstat-no" title="statement not covered" >async (event) =&gt; <span class="fstat-no" title="function not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >    event.preventDefault();</span>
+<span class="cstat-no" title="statement not covered" >    if (!Auth.loggedIn()) <span class="cstat-no" title="statement not covered" >return;</span></span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    try {</span>
+<span class="cstat-no" title="statement not covered" >      await saveSnippet({</span>
+        variables: {
+          title: formData.title,
+          description: formData.description,
+          language: formData.language,
+          code: formData.code,
+        },
+      });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      setFormData({ title: '', description: '', language: '', code: '' });</span>
+<span class="cstat-no" title="statement not covered" >      setMessage('Snippet added successfully!');</span>
+<span class="cstat-no" title="statement not covered" >      setTimeout(() =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >setMessage(''),</span></span> 3000);</span>
+    } catch (error) {
+<span class="cstat-no" title="statement not covered" >      console.error(error);</span>
+    }
+  };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return (</span>
+    &lt;div&gt;
+      {message &amp;&amp; (
+        &lt;div className="alert alert-success text-center"&gt;{message}&lt;/div&gt;
+      )}
+      
+      &lt;div className="p-4" style={{ backgroundColor: '#F5EEDC', borderRadius: '20px' }}&gt;
+        &lt;h3 className="text-center mb-4" style={{ color: '#27548A', fontWeight: 'bold' }}&gt;
+          Create a New Snippet
+        &lt;/h3&gt;
+&nbsp;
+        &lt;form onSubmit={handleSubmit}&gt;
+          &lt;div className="mb-3"&gt;
+            &lt;label htmlFor="title" className="form-label" style={{ color: '#183B4E' }}&gt;Title&lt;/label&gt;
+            &lt;input
+              id="title"
+              name="title"
+              type="text"
+              className="form-control"
+              value={formData.title}
+              onChange={handleChange}
+              required
+            /&gt;
+          &lt;/div&gt;
+&nbsp;
+          &lt;div className="mb-3"&gt;
+            &lt;label htmlFor="description" className="form-label" style={{ color: '#183B4E' }}&gt;Description&lt;/label&gt;
+            &lt;textarea
+              id="description"
+              name="description"
+              rows="2"
+              className="form-control"
+              value={formData.description}
+              onChange={handleChange}
+            /&gt;
+          &lt;/div&gt;
+&nbsp;
+          &lt;div className="mb-3"&gt;
+            &lt;label htmlFor="language" className="form-label" style={{ color: '#183B4E' }}&gt;Language&lt;/label&gt;
+            &lt;select
+              id="language"
+              name="language"
+              className="form-select"
+              value={formData.language}
+              onChange={handleChange}
+              required
+            &gt;
+              &lt;option value=""&gt;Select a language&lt;/option&gt;
+              {languageOptions.map((lang, index) =&gt; (
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >                &lt;option key={index} value={lang}&gt;{lang}&lt;/option&gt;</span></span>
+              ))}
+            &lt;/select&gt;
+          &lt;/div&gt;
+&nbsp;
+          &lt;div className="mb-3"&gt;
+            &lt;label htmlFor="code" className="form-label" style={{ color: '#183B4E' }}&gt;Code&lt;/label&gt;
+            &lt;textarea
+              id="code"
+              name="code"
+              rows="8"
+              className="form-control"
+              value={formData.code}
+              onChange={handleChange}
+              required
+            /&gt;
+          &lt;/div&gt;
+&nbsp;
+          &lt;div className="d-grid"&gt;
+            &lt;button type="submit" className="btn" style={{ backgroundColor: '#27548A', color: '#F5EEDC' }}&gt;
+              Save Snippet
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+&nbsp;
+      {formData.code &amp;&amp; (
+        &lt;div className="mt-5"&gt;
+          &lt;h5 style={{ color: '#27548A' }}&gt;Live Preview:&lt;/h5&gt;
+          &lt;pre className="p-3 rounded" style={{ backgroundColor: '#183B4E', color: '#F5EEDC' }}&gt;
+            {formData.code}
+          &lt;/pre&gt;
+        &lt;/div&gt;
+      )}
+    &lt;/div&gt;
+  );
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat May 24 2025 21:38:22 GMT+0530 (India Standard Time)</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
