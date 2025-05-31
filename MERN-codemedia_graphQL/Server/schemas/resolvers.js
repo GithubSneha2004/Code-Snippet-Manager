@@ -1,6 +1,9 @@
 const { User, Snippet } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
+const generateCode = require('../utils/generateCode');
+
+
 
 const resolvers = {
   Query: {
@@ -33,6 +36,18 @@ const resolvers = {
         ]
       }).populate('createdBy', 'username');
     },
+
+    getSnippetByShareCode: async (_, { code }) => {
+  const snippet = await Snippet.findOne({ "shared.code": code, "shared.isShared": true })
+    .populate('createdBy', 'username');
+
+  if (!snippet) {
+    throw new Error("Shared snippet not found or no longer available.");
+  }
+
+  return snippet;
+},
+
   },
 
   Mutation: {
@@ -87,6 +102,64 @@ const resolvers = {
       if (!snippet) throw new AuthenticationError('Snippet not found or not authorized');
       return snippet;
     },
+
+    shareSnippet: async (_, { snippetId }, context) => {
+  if (!context.user) throw new AuthenticationError('Not logged in');
+
+  const snippet = await Snippet.findById(snippetId);
+  if (!snippet) throw new Error('Snippet not found');
+
+  if (snippet.createdBy.toString() !== context.user._id.toString()) {
+    throw new Error('Not authorized to share this snippet');
+  }
+
+  // If already shared, just return the full snippet
+  if (snippet.shared && snippet.shared.isShared) {
+    return await Snippet.findById(snippetId).populate('createdBy', 'username');
+  }
+
+  const newCode = generateCode();
+
+  snippet.shared = {
+    isShared: true,
+    code: newCode,
+    createdAt: new Date(),
+  };
+
+  await snippet.save();
+
+  // ✅ Return the full updated snippet object
+  return await Snippet.findById(snippetId).populate('createdBy', 'username');
+},
+
+  deleteUser: async (parent, args, context) => {
+  if (!context.user) {
+    throw new AuthenticationError('You must be logged in.');
+  }
+
+  try {
+    const userId = context.user._id;
+
+    // 1. Delete all snippets created by this user
+    await Snippet.deleteMany({ createdBy: userId });
+
+    // 2. Delete the user account
+    await User.findByIdAndDelete(userId);
+
+    return {
+      success: true,
+      message: "User and all associated snippets deleted successfully.",
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: "Failed to delete user account.",
+    };
+  }
+},
+
+
   },
 
 };

@@ -1,6 +1,5 @@
 const { Schema, model, Types } = require('mongoose'); // 👈 include `model`
 
-// Define Snippet schema
 const SnippetSchema = new Schema(
   {
     title: {
@@ -30,6 +29,20 @@ const SnippetSchema = new Schema(
       type: Types.ObjectId,
       ref: 'User',
       required: true,
+    },
+    shared: {
+      isShared:{
+        type: Boolean,
+        default: false,
+      },
+      code:{
+        type:String,
+        unique: true,
+        sparse: true,
+      },
+      createdAt:{
+        type: Date
+      },
     },
   },
   {

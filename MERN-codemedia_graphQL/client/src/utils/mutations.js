@@ -77,3 +77,24 @@
     }
   `;
 
+export const SHARE_SNIPPET = gql`
+  mutation ShareSnippet($snippetId: ID!) {
+    shareSnippet(snippetId: $snippetId) {
+      _id
+      shared {
+        isShared
+        code
+        createdAt
+      }
+    }
+  }
+`;
+
+export const DELETE_USER = gql`
+  mutation DeleteUser {
+    deleteUser {
+      success
+      message
+    }
+  }
+`;

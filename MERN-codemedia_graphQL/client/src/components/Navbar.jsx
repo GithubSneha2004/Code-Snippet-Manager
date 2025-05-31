@@ -1,29 +1,20 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { NavLink } from 'react-router-dom';
 import Auth from '../utils/auth';
 
 export default function Navbarhome() {
-  const linkStyle = {
-    color: '#EAE4DD',
-    transition: 'color 0.3s ease',
-    fontWeight: '500',
-  };
-
-  const hoverStyle = (e) => e.target.style.color = '#DDA853';
-  const outStyle = (e) => e.target.style.color = '#EAE4DD';
+  const getNavLinkClass = ({ isActive }) =>
+    `nav-link px-3 fw-medium text-light ${isActive ? 'fw-bold text-warning' : ''}`;
 
   return (
     <Navbar collapseOnSelect expand="lg" style={{ backgroundColor: '#27548A' }}>
       <Container>
         <Navbar.Brand
-          href="/"
-          style={{
-            color: '#DDA853',
-            fontWeight: 'bold',
-            fontSize: '1.5rem',
-            letterSpacing: '1px'
-          }}
+          as={NavLink}
+          to="/"
+          className="text-warning fw-bold fs-3 text-decoration-none"
         >
           Code-Media
         </Navbar.Brand>
@@ -32,40 +23,33 @@ export default function Navbarhome() {
           <Nav className="ms-auto">
             {Auth.loggedIn() ? (
               <>
-                <Nav.Link
-                  href="/dashboard"
-                  style={linkStyle}
-                  onMouseOver={hoverStyle}
-                  onMouseOut={outStyle}
-                >
+                <Nav.Link as={NavLink} to="/dashboard" className={getNavLinkClass}>
                   Dashboard
                 </Nav.Link>
+                <Nav.Link as={NavLink} to="/snippets" className={getNavLinkClass}>
+                  Snippets
+                </Nav.Link>
+                <Nav.Link as={NavLink} to="/create-snippet" className={getNavLinkClass}>
+                  Create
+                </Nav.Link>
+                <Nav.Link as={NavLink} to="/profile" className={getNavLinkClass}>
+                  Profile
+                </Nav.Link>
                 <Nav.Link
-                  href="/logoutmessage"
+                  as={NavLink}
+                  to="/logoutmessage"
                   onClick={Auth.logout}
-                  style={linkStyle}
-                  onMouseOver={hoverStyle}
-                  onMouseOut={outStyle}
+                  className={getNavLinkClass}
                 >
                   Logout
                 </Nav.Link>
               </>
             ) : (
               <>
-                <Nav.Link
-                  href="/login"
-                  style={linkStyle}
-                  onMouseOver={hoverStyle}
-                  onMouseOut={outStyle}
-                >
+                <Nav.Link as={NavLink} to="/login" className={getNavLinkClass}>
                   Login
                 </Nav.Link>
-                <Nav.Link
-                  href="/signup"
-                  style={linkStyle}
-                  onMouseOver={hoverStyle}
-                  onMouseOut={outStyle}
-                >
+                <Nav.Link as={NavLink} to="/signup" className={getNavLinkClass}>
                   Signup
                 </Nav.Link>
               </>

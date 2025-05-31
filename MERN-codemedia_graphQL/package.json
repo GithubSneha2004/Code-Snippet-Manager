@@ -21,7 +21,8 @@
     "dotenv": "^16.4.7",
     "framer-motion": "^10.12.16",
     "react-router-dom": "^6.12.1",
-    "react-spring": "^9.7.1"
+    "react-spring": "^9.7.1",
+    "react-toastify": "^11.0.5"
   },
   "devDependencies": {
     "jest": "^29.7.0",
