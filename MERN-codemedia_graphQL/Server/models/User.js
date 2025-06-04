@@ -8,6 +8,11 @@ const userSchema = new Schema(
       required: true,
       unique: true,
     },
+    role : {
+      type: String,
+      enum:['professor','student'],
+      default: 'professor',
+    },
     email: {
       type: String,
       required: true,

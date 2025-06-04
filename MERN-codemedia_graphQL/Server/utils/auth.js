@@ -5,8 +5,8 @@ const expiration = '2h';
 
 module.exports = {
   // Function to sign the token
-  signToken: function ({ username, email, _id }) {
-    const payload = { username, email, _id };
+  signToken: function ({ username, email, _id, role}) {
+    const payload = { username, email, _id, role };
 
     // Create and return the signed token with an expiration of 2 hours
     return jwt.sign({ data: payload }, secret, { expiresIn: expiration });

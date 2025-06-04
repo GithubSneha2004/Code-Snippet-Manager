@@ -39,9 +39,11 @@ const SnippetSchema = new Schema(
         type:String,
         unique: true,
         sparse: true,
+        default: null,  
       },
       createdAt:{
-        type: Date
+        type: Date,
+        default: null,
       },
     },
   },

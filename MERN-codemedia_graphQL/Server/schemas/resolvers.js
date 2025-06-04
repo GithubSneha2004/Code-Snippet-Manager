@@ -56,12 +56,23 @@ const resolvers = {
       if (!user) throw new AuthenticationError('Incorrect credentials');
       const valid = await user.isCorrectPassword(password);
       if (!valid) throw new AuthenticationError('Incorrect credentials');
-      const token = signToken(user);
+      const token = signToken({
+  _id: user._id,
+  email: user.email,
+  username: user.username,
+  role: user.role,
+});
       return { token, user };
     },
     addUser: async (parent, args) => {
+
       const user = await User.create(args);
-      const token = signToken(user);
+      const token = signToken({
+  _id: user._id,
+  email: user.email,
+  username: user.username,
+  role: user.role,
+});
       return { token, user };
     },
 
@@ -86,6 +97,7 @@ const resolvers = {
 
     deleteSnippet: async (parent, { snippetId }, context) => {
       if (!context.user) throw new AuthenticationError('Not logged in');
+      if (context.user.role !== 'professor') throw new AuthenticationError('Only professors can delete snippets');
       const snippet = await Snippet.findOne({ _id: snippetId, createdBy: context.user._id });
       if (!snippet) throw new AuthenticationError('Snippet not found or not authorized');
       await Snippet.deleteOne({ _id: snippetId });
@@ -94,6 +106,7 @@ const resolvers = {
 
     editSnippet: async (parent, { snippetId, code }, context) => {
       if (!context.user) throw new AuthenticationError('Not logged in');
+      if (context.user.role !== 'professor') throw new AuthenticationError('Only professors can edit snippets');
       const snippet = await Snippet.findOneAndUpdate(
         { _id: snippetId, createdBy: context.user._id },
         { $set: { code } },
@@ -105,6 +118,7 @@ const resolvers = {
 
     shareSnippet: async (_, { snippetId }, context) => {
   if (!context.user) throw new AuthenticationError('Not logged in');
+  if (context.user.role !== 'professor') throw new AuthenticationError('Only professors can share snippets');
 
   const snippet = await Snippet.findById(snippetId);
   if (!snippet) throw new Error('Snippet not found');
