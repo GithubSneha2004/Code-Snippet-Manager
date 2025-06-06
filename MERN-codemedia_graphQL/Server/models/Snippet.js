@@ -45,6 +45,7 @@ const SnippetSchema = new Schema(
         type: Date,
         default: null,
       },
+      codeExpiresAt: { type: Date, default: null }, 
     },
   },
   {

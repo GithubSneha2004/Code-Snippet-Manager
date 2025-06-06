@@ -1,20 +1,22 @@
 const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
+
   type User {
-    _id: ID
-    username: String
-    email: String
+    _id: ID!
+    username: String!
+    email: String!
+    role: String!
     savedSnippets: [Snippet]
   }
 
   type Snippet {
     _id: ID!
     title: String!
+    code: String!
     description: String!
     language: String!
-    code: String!
-    createdAt: String!
+    createdAt: String
     createdBy: User!
     shared: SharedInfo
   }
@@ -23,6 +25,7 @@ const typeDefs = gql`
     isShared: Boolean
     code: String
     createdAt: String
+    codeExpiresAt: String
   }
 
   type Auth {
@@ -30,9 +33,9 @@ const typeDefs = gql`
     user: User
   }
 
-  type DeleteResponse {
-    success: Boolean!
-    message: String!
+  type DeleteResult {
+    success: Boolean
+    message: String
   }
 
   type Query {
@@ -47,20 +50,18 @@ const typeDefs = gql`
   type Mutation {
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
-
     saveSnippet(
       title: String!
       code: String!
       description: String!
       language: String!
     ): Snippet
-
     deleteSnippet(snippetId: ID!): Snippet
     editSnippet(snippetId: ID!, code: String!): Snippet
-
     shareSnippet(snippetId: ID!): Snippet
-    deleteUser: DeleteResponse!
+    deleteUser: DeleteResult
   }
+
 `;
 
 module.exports = typeDefs;

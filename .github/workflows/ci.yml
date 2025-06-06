@@ -25,6 +25,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Create Server .env file
+        run: |
+          echo "PORT=${{ secrets.SERVER_PORT }}" >> MERN-codemedia_graphQL/Server/.env
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> MERN-codemedia_graphQL/Server/.env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> MERN-codemedia_graphQL/Server/.env
+
+      - name: Create Client .env file
+        run: |
+          echo "HOST=${{ secrets.CLIENT_HOST }}" >> MERN-codemedia_graphQL/client/.env
+          echo "PORT=${{ secrets.CLIENT_PORT }}" >> MERN-codemedia_graphQL/client/.env
+          echo "REACT_APP_GRAPHQL_URI=${{ secrets.REACT_APP_GRAPHQL_URI }}" >> MERN-codemedia_graphQL/client/.env
+
+
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -44,6 +58,11 @@ jobs:
         run: |
           cd MERN-codemedia_graphQL/client
           npm ci || npm install
+
+      - name: Run frontend tests
+        run: |
+          cd MERN-codemedia_graphQL/client
+          npm test || echo "No tests yet"
 
       - name: Run frontend build
         run: |

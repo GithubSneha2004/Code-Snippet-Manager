@@ -96,14 +96,16 @@ export default function Signup() {
       )}
 
       <Card
-        className="col-12 col-md-4 mx-auto signup"
-        style={{
-          marginTop: "10%",
-          borderRadius: "30px",
-          backgroundColor: "#F5EEDC",
-          boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)",
-        }}
-      >
+  className="col-12 col-md-4 mx-auto signup glow-box"
+  style={{
+    marginTop: "10%",
+    borderRadius: "30px",
+    backgroundColor: "#F5EEDC",
+    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)",
+    position: "relative"
+  }}
+>
+
         <Card.Body>
           <Card.Title
             className="text-center mb-4"

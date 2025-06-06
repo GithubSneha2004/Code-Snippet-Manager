@@ -9,13 +9,24 @@
 }
 
 html, body {
-  font-family: 'Monesque', sans-serif !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500;
   margin: 0;
   padding: 0;
   background-color: var(--bg-light) !important;
   color: var(--text-color);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: var(--accent-dark);
+}
+
+/* Paragraphs */
+p {
+  font-weight: 500;
 }
 
 /* Code Blocks */
@@ -39,6 +50,11 @@ a:hover {
 .form-control:focus {
   border-color: var(--highlight);
   box-shadow: 0 0 0 0.2rem rgba(221, 168, 83, 0.25);
+}
+
+button,
+.btn {
+  font-weight: 600;
 }
 
 /* Button hover effect globally */

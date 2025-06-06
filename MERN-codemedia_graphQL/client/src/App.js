@@ -1,6 +1,6 @@
 import React from 'react';
 import Login from './components/Login';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Signup from './components/Signup';
 import Home from './components/home/Home';
 import Navbarhome from './components/Navbar';
@@ -19,6 +19,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import JoinByCode from './components/JoinByCode';
 import StudentRedirectRoute from './components/StudentRedirectRoute';
+import EntryPage from './components/EntryPage';
 
 const httpLink = createHttpLink({
   uri: process.env.REACT_APP_GRAPHQL_URI || 'http://localhost:5000/graphql',
@@ -39,58 +40,61 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-function App() {
+// New inner component inside Router — can safely use useLocation here
+function AppContent() {
+  const location = useLocation();
   const loggedIn = auth.loggedIn();
+  {/*const showNavbar = loggedIn || location.pathname === '/home' || location.pathname === '/loginreminder';*/}
+  const hideNavbarPaths = ['/', '/login', '/signup'];
+  const showNavbar = !hideNavbarPaths.includes(location.pathname);
 
+
+  return (
+    <>
+      {showNavbar && <Navbarhome />}
+
+      <ToastContainer position="bottom-center" autoClose={3000} theme="colored" />
+
+      <Routes>
+        {/* Default entry page */}
+        <Route path="/" element={<EntryPage />} />
+
+        {/* Public routes */}
+        <Route path="/login" element={loggedIn ? <Navigate to="/dashboard" replace /> : <Login />} />
+        <Route path="/signup" element={loggedIn ? <Navigate to="/dashboard" replace /> : <Signup />} />
+        <Route path="/logoutmessage" element={<Logoutmsg />} />
+        <Route path="/join" element={<JoinByCode />} />
+        <Route path="/shared/:code" element={<SharedSnippet />} />
+        <Route path="/home" element={loggedIn ? <Navigate to="/dashboard" replace /> : <Home />} />
+
+        {/* Protected routes */}
+        {loggedIn ? (
+          <>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/snippets" element={<MySnippets />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route
+              path="/create-snippet"
+              element={
+                <StudentRedirectRoute>
+                  <CreateSnippet />
+                </StudentRedirectRoute>
+              }
+            />
+          </>
+        ) : (
+          <Route path="*" element={<LoginReminder />} />
+        )}
+      </Routes>
+    </>
+  );
+}
+
+function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <>
-          {/* Show Navbar only if logged in */}
-          {loggedIn && <Navbarhome />}
-
-          <ToastContainer position="bottom-center" autoClose={3000} theme="colored" />
-
-          <Routes>
-            {/* Redirect '/' to '/join' */}
-            <Route path="/" element={<Navigate to="/join" replace />} />
-
-            {/* Protect /login and /signup: redirect to dashboard if logged in */}
-            <Route
-              path="/login"
-              element={loggedIn ? <Navigate to="/dashboard" replace /> : <Login />}
-            />
-            <Route
-              path="/signup"
-              element={loggedIn ? <Navigate to="/dashboard" replace /> : <Signup />}
-            />
-
-            {loggedIn ? (
-              <>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/snippets" element={<MySnippets />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route
-                  path="/create-snippet"
-                  element={
-                    <StudentRedirectRoute>
-                      <CreateSnippet />
-                    </StudentRedirectRoute>
-                  }
-                />
-              </>
-            ) : (
-              <Route path="*" element={<LoginReminder />} />
-            )}
-
-            {/* Public or unauthenticated routes */}
-            <Route path="/logoutmessage" element={<Logoutmsg />} />
-            <Route path="/join" element={<JoinByCode />} />
-            <Route path="/shared/:code" element={<SharedSnippet />} />
-            {/* Optional: Keep Home route if you want or remove */}
-            <Route path="/home" element={<Home />} />
-          </Routes>
-        </>
+        <AppContent />
       </Router>
     </ApolloProvider>
   );

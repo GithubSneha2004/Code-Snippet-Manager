@@ -6,11 +6,18 @@ import Auth from '../utils/auth';
 
 export default function Navbarhome() {
   const getNavLinkClass = ({ isActive }) =>
-    `nav-link px-3 fw-medium text-warning ${isActive ? 'fw-bold text-decoration-underline' : ''}`;
+    `nav-link px-3 py-2 mx-1 rounded-pill fw-medium ${
+      isActive ? 'bg-warning text-dark' : 'text-light'
+    }`;
+
+  const navLinkStyle = {
+    textDecoration: 'none',
+    transition: 'all 0.2s ease-in-out',
+  };
 
   // Get user data (assuming auth.getProfile() returns decoded token with user info)
   const user = Auth.loggedIn() ? Auth.getProfile().data : null;
-  const isStudent = user?.role === 'student';  // adjust 'role' property as per your user object
+  const isStudent = user?.role === 'student'; // adjust 'role' as needed
 
   return (
     <Navbar collapseOnSelect expand="lg" style={{ backgroundColor: '#27548A' }}>
@@ -27,30 +34,35 @@ export default function Navbarhome() {
           <Nav className="ms-auto d-flex align-items-center">
             {Auth.loggedIn() ? (
               <>
-                <NavLink to="/dashboard" className={getNavLinkClass}>
+                <NavLink to="/dashboard" className={getNavLinkClass} style={navLinkStyle}>
                   Dashboard
                 </NavLink>
-                <NavLink to="/snippets" className={getNavLinkClass}>
+                <NavLink to="/snippets" className={getNavLinkClass} style={navLinkStyle}>
                   Snippets
                 </NavLink>
                 {!isStudent && (
-                  <NavLink to="/create-snippet" className={getNavLinkClass}>
+                  <NavLink to="/create-snippet" className={getNavLinkClass} style={navLinkStyle}>
                     Create
                   </NavLink>
                 )}
-                <NavLink to="/profile" className={getNavLinkClass}>
+                <NavLink to="/profile" className={getNavLinkClass} style={navLinkStyle}>
                   Profile
                 </NavLink>
-                <NavLink to="/logoutmessage" onClick={Auth.logout} className={getNavLinkClass}>
+                <NavLink
+                  to="/logoutmessage"
+                  onClick={Auth.logout}
+                  className={getNavLinkClass}
+                  style={navLinkStyle}
+                >
                   Logout
                 </NavLink>
               </>
             ) : (
               <>
-                <NavLink to="/login" className={getNavLinkClass}>
+                <NavLink to="/login" className={getNavLinkClass} style={navLinkStyle}>
                   Login
                 </NavLink>
-                <NavLink to="/signup" className={getNavLinkClass}>
+                <NavLink to="/signup" className={getNavLinkClass} style={navLinkStyle}>
                   Signup
                 </NavLink>
               </>

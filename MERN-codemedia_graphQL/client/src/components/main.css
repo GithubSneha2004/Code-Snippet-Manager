@@ -1,0 +1,38 @@
+.glow-box {
+  position: relative;
+  z-index: 0;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.glow-box::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  background: linear-gradient(45deg, #A8C3E8, #F5EEDC, #A8C3E8);
+  z-index: -1;
+  border-radius: 30px;
+  filter: blur(10px);
+  animation: glow-pulse 3s ease-in-out infinite;
+  opacity: 0.5;
+}
+
+
+
+@keyframes glow-pulse {
+  0% {
+    filter: blur(6px);
+    opacity: 0.4;
+  }
+  50% {
+    filter: blur(12px);
+    opacity: 0.9;
+  }
+  100% {
+    filter: blur(6px);
+    opacity: 0.4;
+  }
+}

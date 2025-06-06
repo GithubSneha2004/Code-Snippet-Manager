@@ -56,14 +56,16 @@ export default function Login() {
       )}
 
       <Card
-        className='col-12 col-md-4 mx-auto login'
-        style={{
-          marginTop: "10%",
-          borderRadius: "30px",
-          backgroundColor: "#F5EEDC",
-          boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)"
-        }}
-      >
+  className="col-12 col-md-4 mx-auto login glow-box"
+  style={{
+    marginTop: "10%",
+    borderRadius: "30px",
+    backgroundColor: "#F5EEDC",
+    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)",
+    position: "relative"
+  }}
+>
+
         <Card.Body>
           <Card.Title
             className="text-center mb-4"
@@ -71,7 +73,7 @@ export default function Login() {
           >
             Login
           </Card.Title>
-          <Card.Text>
+          <div>
             <div className="formlogin">
               <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -147,7 +149,7 @@ export default function Login() {
                 </span>
               </div>
             </div>
-          </Card.Text>
+          </div>
         </Card.Body>
       </Card>
     </>

@@ -27,19 +27,60 @@ export default function MySnippets() {
   const [viewFavoritesOnly, setViewFavoritesOnly] = useState(false);
   const [message, setMessage] = useState('');
 
-  const handleDelete = async (snippetId) => {
+  // 🧠 Share Code Management
+  const [shareCodeMap, setShareCodeMap] = useState(() => {
+    const stored = localStorage.getItem('shareCodeMap');
+    if (!stored) return {};
+    const parsed = JSON.parse(stored);
+    const now = Date.now();
+
+    const valid = Object.fromEntries(
+      Object.entries(parsed).filter(([_, { timestamp }]) => now - timestamp < 15 * 60 * 1000)
+    );
+
+    return Object.fromEntries(
+      Object.entries(valid).map(([id, { code }]) => [id, code])
+    );
+  });
+
+  const persistShareCode = (id, code) => {
+    const existing = JSON.parse(localStorage.getItem('shareCodeMap') || '{}');
+    existing[id] = { code, timestamp: Date.now() };
+    localStorage.setItem('shareCodeMap', JSON.stringify(existing));
+  };
+
+  const handleDelete = async (id) => {
     try {
-      await deleteSnippet({ variables: { snippetId } });
+      await deleteSnippet({ variables: { snippetId: id } });
       setMessage('Snippet deleted successfully!');
       setTimeout(() => setMessage(''), 3000);
-    } catch (error) {
-      console.error(error);
+    } catch {
       setMessage('Failed to delete snippet.');
     }
   };
 
+  const handleCopyLink = async (id) => {
+    try {
+      const { data } = await shareSnippet({ variables: { snippetId: id } });
+      const code = data.shareSnippet.shared.code;
+      const url = `${window.location.origin}/shared/${code}`;
+
+      setShareCodeMap((prev) => {
+        const updated = { ...prev, [id]: code };
+        persistShareCode(id, code);
+        return updated;
+      });
+
+      await navigator.clipboard.writeText(url);
+      setMessage('Share link copied to clipboard!');
+      setTimeout(() => setMessage(''), 3000);
+    } catch (err) {
+      console.error(err);
+      setMessage('Failed to share snippet.');
+    }
+  };
+
   const handleViewCode = (code, id) => {
-    console.log('Opening modal for snippet:', id, 'code:', code);
     setModalCode(code);
     setShowModal(true);
     setSnippetId(id);
@@ -54,77 +95,39 @@ export default function MySnippets() {
 
   const handleEditSnippet = () => setIsEditing(true);
 
-  const handleUpdateSnippet = async (event) => {
-    event.preventDefault();
+  const handleUpdateSnippet = async (e) => {
+    e.preventDefault();
     try {
-      await editSnippet({ variables: { snippetId: snippetId, code: modalCode } });
+      await editSnippet({ variables: { snippetId, code: modalCode } });
       setIsEditing(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
-
-  const handleCodeChange = (event) => setModalCode(event.target.value);
 
   const handleFavoriteToggle = (id) => {
     setFavorites((prev) =>
-      prev.includes(id) ? prev.filter((favId) => favId !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((fav) => fav !== id) : [...prev, id]
     );
   };
 
-  // New Share button handler: copy share URL to clipboard and show message
-  const handleCopyLink = async (id) => {
-    try {
-      const { data } = await shareSnippet({ variables: { snippetId: id } });
-      const sharedCode = data.shareSnippet.shared.code;
-      const shareUrl = `${window.location.origin}/shared/${sharedCode}`;
-
-      navigator.clipboard.writeText(shareUrl)
-        .then(() => {
-          setMessage('Share link copied to clipboard!');
-          setTimeout(() => setMessage(''), 3000);
-        })
-        .catch(() => {
-          setMessage('Failed to copy share link.');
-        });
-    } catch (error) {
-      console.error('Error sharing snippet:', error);
-      setMessage('Failed to share snippet.');
-    }
-  };
-
   const filteredSnippets = mySnippets
-    .filter((snippet) => {
-      const search = searchText.toLowerCase();
-      return (
-        snippet.title.toLowerCase().includes(search) ||
-        snippet.language.toLowerCase().includes(search) ||
-        snippet.description.toLowerCase().includes(search)
-      );
-    })
-    .filter((snippet) => !viewFavoritesOnly || favorites.includes(snippet._id))
-    .sort((a, b) => {
-      if (!sortBy) return 0;
-      if (sortBy === 'title' || sortBy === 'language') {
-        return a[sortBy].localeCompare(b[sortBy]);
-      }
-      return 0;
-    });
+    .filter((s) =>
+      [s.title, s.language, s.description].some((f) =>
+        f.toLowerCase().includes(searchText.toLowerCase())
+      )
+    )
+    .filter((s) => !viewFavoritesOnly || favorites.includes(s._id))
+    .sort((a, b) =>
+      sortBy ? a[sortBy].localeCompare(b[sortBy]) : 0
+    );
 
-  if (loading) {
-    return <p>Loading snippets...</p>;
-  }
+  if (loading) return <p>Loading snippets...</p>;
 
   return (
     <div className="container mt-5">
-      <h3
-        className="text-center p-3"
-        style={{ backgroundColor: '#27548A', color: '#F5EEDC', borderRadius: '12px' }}
-      >
-        My Snippets
-      </h3>
+      <h3 className="text-center p-3" style={headerStyle}>My Snippets</h3>
 
-      {/* Search, Sort, Filter UI */}
       <div className="d-flex gap-3 my-3">
         <input
           type="text"
@@ -134,7 +137,6 @@ export default function MySnippets() {
           onChange={(e) => setSearchText(e.target.value)}
           style={{ borderColor: '#27548A' }}
         />
-
         <Form.Select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
@@ -144,7 +146,6 @@ export default function MySnippets() {
           <option value="title">Title</option>
           <option value="language">Language</option>
         </Form.Select>
-
         <Form.Check
           type="checkbox"
           label="View Favorites Only"
@@ -154,7 +155,7 @@ export default function MySnippets() {
       </div>
 
       {message && (
-        <div className="alert text-center" style={{ backgroundColor: '#DDA853', color: '#183B4E' }}>
+        <div className="alert text-center" style={alertStyle}>
           {message}
         </div>
       )}
@@ -163,107 +164,57 @@ export default function MySnippets() {
         {filteredSnippets.length ? (
           filteredSnippets.map((snippet) => (
             <div key={snippet._id} className="col-md-4 mb-4">
-              <div
-                className="p-3"
-                style={{
-                  backgroundColor: '#F5EEDC',
-                  borderRadius: '20px',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                }}
-              >
+              <div style={cardStyle}>
                 <h5 style={{ color: '#27548A' }}>{snippet.title}</h5>
                 <p>{snippet.description}</p>
-                <p>
-                  <strong>Language:</strong> {snippet.language}
-                </p>
+                <p><strong>Language:</strong> {snippet.language}</p>
+
                 <div className="d-flex flex-wrap gap-2 mt-3">
                   <button
                     className="btn"
-                    style={{
-                      backgroundColor: '#27548A',
-                      color: '#F5EEDC',
-                      whiteSpace: 'nowrap',
-                      minWidth: '80px',
-                      padding: '6px 12px',
-                      borderRadius: '8px',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                      flexShrink: 0,
-                    }}
+                    style={btnStyle('#27548A', '#F5EEDC')}
                     onClick={() => handleViewCode(snippet.code, snippet._id)}
-                    aria-label={`View code for snippet ${snippet.title}`}
                   >
                     View Code
                   </button>
-
                   <button
                     className="btn"
-                    style={{
-                      backgroundColor: '#DDA853',
-                      color: '#183B4E',
-                      whiteSpace: 'nowrap',
-                      minWidth: '80px',
-                      padding: '6px 12px',
-                      borderRadius: '8px',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                      flexShrink: 0,
-                    }}
+                    style={btnStyle('#DDA853', '#183B4E')}
                     onClick={() => handleDelete(snippet._id)}
-                    aria-label={`Delete snippet ${snippet.title}`}
                   >
                     Delete
                   </button>
-
                   <button
                     className="btn"
-                    style={{
-                      backgroundColor: favorites.includes(snippet._id) ? '#183B4E' : '#27548A',
-                      color: '#F5EEDC',
-                      whiteSpace: 'nowrap',
-                      minWidth: '80px',
-                      padding: '6px 12px',
-                      borderRadius: '8px',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                      flexShrink: 0,
-                    }}
+                    style={btnStyle(favorites.includes(snippet._id) ? '#183B4E' : '#27548A', '#F5EEDC')}
                     onClick={() => handleFavoriteToggle(snippet._id)}
-                    aria-label={
-                      favorites.includes(snippet._id)
-                        ? `Unfavorite snippet ${snippet.title}`
-                        : `Favorite snippet ${snippet.title}`
-                    }
                   >
                     {favorites.includes(snippet._id) ? 'Unfavorite' : 'Favorite'}
                   </button>
-
                   <button
                     className="btn"
-                    style={{
-                      backgroundColor: '#DDA853',
-                      color: '#183B4E',
-                      whiteSpace: 'nowrap',
-                      minWidth: '80px',
-                      padding: '6px 12px',
-                      borderRadius: '8px',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                      flexShrink: 0,
-                    }}
-                    onClick={() => handleCopyLink(snippet.shareId || snippet._id)}
-                    aria-label={`Share snippet ${snippet.title}`}
+                    style={btnStyle('#DDA853', '#183B4E')}
+                    onClick={() => handleCopyLink(snippet._id)}
                   >
                     Share
                   </button>
                 </div>
+
+                {shareCodeMap[snippet._id] && (
+                  <div className="mt-2" style={shareCodeStyle}>
+                    Share Code: <strong>{shareCodeMap[snippet._id]}</strong>
+                  </div>
+                )}
               </div>
             </div>
           ))
         ) : (
-          <p>No snippets available.</p>
+          <p>No snippets found.</p>
         )}
       </div>
 
-      {/* Modal to view and edit code */}
       <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
-        <Modal.Header style={{ backgroundColor: '#27548A', color: '#F5EEDC' }} closeButton>
+        <Modal.Header style={headerStyle} closeButton>
           <Modal.Title>Snippet Code</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ backgroundColor: '#F5EEDC' }}>
@@ -271,48 +222,31 @@ export default function MySnippets() {
             <textarea
               className="form-control"
               value={modalCode}
-              onChange={handleCodeChange}
+              onChange={(e) => setModalCode(e.target.value)}
               rows="10"
               style={{ backgroundColor: '#fff', borderColor: '#27548A' }}
             />
           ) : (
-            <pre
-              className="p-3"
-              style={{ backgroundColor: '#183B4E', color: '#F5EEDC', borderRadius: '12px' }}
-            >
-              {modalCode}
-            </pre>
+            <pre style={codeDisplayStyle}>{modalCode}</pre>
           )}
         </Modal.Body>
         <Modal.Footer style={{ backgroundColor: '#F5EEDC' }}>
-          <Button
-            style={{ backgroundColor: '#DDA853', border: 'none', color: '#183B4E' }}
-            onClick={handleCopyCode}
-          >
+          <Button style={btnStyle('#DDA853', '#183B4E')} onClick={handleCopyCode}>
             {isCopied ? 'Copied' : 'Copy Code'}
           </Button>
           {isEditing ? (
-            <Button
-              style={{ backgroundColor: '#27548A', border: 'none', color: '#F5EEDC' }}
-              onClick={handleUpdateSnippet}
-            >
+            <Button style={btnStyle('#27548A', '#F5EEDC')} onClick={handleUpdateSnippet}>
               Save
             </Button>
           ) : (
-            <Button
-              style={{ backgroundColor: '#27548A', border: 'none', color: '#F5EEDC' }}
-              onClick={handleEditSnippet}
-            >
+            <Button style={btnStyle('#27548A', '#F5EEDC')} onClick={handleEditSnippet}>
               Edit
             </Button>
           )}
-          <Button
-            variant="secondary"
-            onClick={() => {
-              setShowModal(false);
-              setIsEditing(false);
-            }}
-          >
+          <Button variant="secondary" onClick={() => {
+            setShowModal(false);
+            setIsEditing(false);
+          }}>
             Close
           </Button>
         </Modal.Footer>
@@ -320,3 +254,53 @@ export default function MySnippets() {
     </div>
   );
 }
+
+// 🧾 Styles
+const btnStyle = (bg, color) => ({
+  backgroundColor: bg,
+  color: color,
+  whiteSpace: 'nowrap',
+  minWidth: '80px',
+  padding: '6px 12px',
+  borderRadius: '8px',
+  boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+  flexShrink: 0,
+});
+
+const headerStyle = {
+  backgroundColor: '#27548A',
+  color: '#F5EEDC',
+  borderRadius: '12px',
+};
+
+const alertStyle = {
+  backgroundColor: '#DDA853',
+  color: '#183B4E',
+};
+
+const cardStyle = {
+  backgroundColor: '#F5EEDC',
+  borderRadius: '20px',
+  padding: '1rem',
+  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+};
+
+const codeDisplayStyle = {
+  backgroundColor: '#183B4E',
+  color: '#F5EEDC',
+  borderRadius: '12px',
+  padding: '1rem',
+  whiteSpace: 'pre-wrap',
+};
+
+const shareCodeStyle = {
+  fontSize: '0.9rem',
+  fontFamily: 'monospace',
+  backgroundColor: '#FFF',
+  color: '#27548A',
+  padding: '6px 12px',
+  borderRadius: '10px',
+  boxShadow: '0 0 8px rgba(39,84,138,0.2)',
+  display: 'inline-block',
+  marginTop: '0.5rem',
+};
