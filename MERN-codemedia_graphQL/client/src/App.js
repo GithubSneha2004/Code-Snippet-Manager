@@ -22,7 +22,7 @@ import StudentRedirectRoute from './components/StudentRedirectRoute';
 import EntryPage from './components/EntryPage';
 
 const httpLink = createHttpLink({
-  uri: process.env.REACT_APP_GRAPHQL_URI || 'http://localhost:5000/graphql',
+  uri: process.env.REACT_APP_GRAPHQL_URI ,
 });
 
 const authLink = setContext((_, { headers }) => {
