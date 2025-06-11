@@ -4,7 +4,7 @@ const typeDefs = gql`
 
   type User {
     _id: ID!
-    username: String!
+    username: String
     email: String!
     role: String!
     savedSnippets: [Snippet]
@@ -61,6 +61,12 @@ const typeDefs = gql`
     shareSnippet(snippetId: ID!): Snippet
     deleteUser: DeleteResult
   }
+
+  type Query {
+  getMe: User
+  testSentryError: String
+}
+
 
 `;
 

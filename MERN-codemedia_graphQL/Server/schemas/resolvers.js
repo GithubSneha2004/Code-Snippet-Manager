@@ -13,6 +13,7 @@ const resolvers = {
           .select('-__v -password')
           .populate('savedSnippets');
       }
+       
       throw new AuthenticationError('Not logged in');
     },
 

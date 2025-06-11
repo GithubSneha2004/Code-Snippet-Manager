@@ -1,10 +1,14 @@
-// 
-
 require('dotenv').config();
-
 const express = require('express');
-const { ApolloServer } = require('apollo-server-express');
 const path = require('path');
+const { ApolloServer } = require('apollo-server-express');
+
+const {
+  graphqlRequestCounter,
+  resolverCounter,
+  errorCounter,
+  register // ✅ Reuse this, do NOT redefine
+} = require('./metrics');
 
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
@@ -16,32 +20,39 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// Serve static files from the React build folder
+// ✅ Serve React frontend
 app.use(express.static(path.join(__dirname, '../client/build')));
 
-// Catch-all route to serve React's index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+// ✅ Metrics endpoint for Prometheus
+app.get('/metrics', async (req, res) => {
+  try {
+    res.set('Content-Type', register.contentType);
+    res.end(await register.metrics());
+  } catch (err) {
+    console.error('Metrics error:', err); // 
+    res.status(500).end(err);
+  }
 });
 
 const startApolloServer = async () => {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: authMiddleware,
+    context: ({ req }) => {
+      graphqlRequestCounter.inc(); // ✅ Count every GraphQL request
+      return authMiddleware({ req });
+    }
   });
 
   try {
-    // Start Apollo Server
     await server.start();
     server.applyMiddleware({ app });
 
-    // Catch-all route to serve React's index.html for unmatched routes
+    // ✅ React fallback
     app.get('*', (req, res) => {
       res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
     });
 
-    // Wait for DB and then start server
     db.once('open', () => {
       app.listen(PORT, () => {
         console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`);
@@ -57,7 +68,4 @@ const startApolloServer = async () => {
   });
 };
 
-
-  startApolloServer();
-
-
+startApolloServer();
