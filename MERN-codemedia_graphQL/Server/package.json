@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "start": "node server.js",
-    "watch": "nodemon server.js"
+    "watch": "nodemon server.js",
+    "build": "cd client && npm install && npm run build"
   },
   "author": "",
   "license": "ISC",
