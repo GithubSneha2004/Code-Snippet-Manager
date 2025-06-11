@@ -8,6 +8,8 @@ import { ADD_USER } from "../utils/mutations";
 import Auth from "../utils/auth";
 import Alert from "react-bootstrap/Alert";
 import { Eye, EyeOff, Check, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Signup() {
   const [userFormData, setUserFormData] = useState({
@@ -23,6 +25,8 @@ export default function Signup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [addUser, { error }] = useMutation(ADD_USER);
+  const navigate = useNavigate();
+
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -70,6 +74,8 @@ export default function Signup() {
       });
 
       Auth.login(data.addUser.token);
+      navigate("/dashboard");
+
 
       setUserFormData({
         username: "",
