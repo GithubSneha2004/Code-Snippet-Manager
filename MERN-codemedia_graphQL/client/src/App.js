@@ -22,8 +22,9 @@ import StudentRedirectRoute from './components/StudentRedirectRoute';
 import EntryPage from './components/EntryPage';
 
 const httpLink = createHttpLink({
-  uri: process.env.REACT_APP_GRAPHQL_URI ,
+  uri: process.env.REACT_APP_GRAPHQL_URI || "/graphql",
 });
+
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('id_token');
