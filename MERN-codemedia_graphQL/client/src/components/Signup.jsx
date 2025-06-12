@@ -73,8 +73,11 @@ export default function Signup() {
         variables: { ...userFormData },
       });
 
-      Auth.login(data.addUser.token);
-      navigate("/dashboard");
+      // Auth.login(data.addUser.token);
+      // navigate("/dashboard");
+
+      navigate("/login");
+
 
 
       setUserFormData({

@@ -6,6 +6,8 @@ import Auth from '../utils/auth';
 
 export default function Navbarhome() {
   const location = useLocation();
+  //const isRestrictedPage =location.pathname === '/join' || location.pathname.startsWith('/shared');
+
   const isRestrictedPage =
     location.pathname === '/join' || location.pathname.startsWith('/shared'); // updated
 
