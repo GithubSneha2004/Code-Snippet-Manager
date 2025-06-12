@@ -1,12 +1,13 @@
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import { NavLink, useLocation } from 'react-router-dom'; // added useLocation
+import { NavLink, useLocation } from 'react-router-dom';
 import Auth from '../utils/auth';
 
 export default function Navbarhome() {
-  const location = useLocation(); // get current path
-  const isJoinPage = location.pathname === '/join'; // check if current path is /join
+  const location = useLocation();
+  const isRestrictedPage =
+    location.pathname === '/join' || location.pathname.startsWith('/shared'); // updated
 
   const getNavLinkClass = ({ isActive }) =>
     `nav-link px-3 py-2 mx-1 rounded-pill fw-medium ${
@@ -18,9 +19,8 @@ export default function Navbarhome() {
     transition: 'all 0.2s ease-in-out',
   };
 
-  // Get user data (assuming auth.getProfile() returns decoded token with user info)
   const user = Auth.loggedIn() ? Auth.getProfile().data : null;
-  const isStudent = user?.role === 'student'; // adjust 'role' as needed
+  const isStudent = user?.role === 'student';
 
   return (
     <Navbar collapseOnSelect expand="lg" style={{ backgroundColor: '#27548A' }}>
@@ -60,7 +60,7 @@ export default function Navbarhome() {
                   Logout
                 </NavLink>
               </>
-            ) : !isJoinPage && (
+            ) : !isRestrictedPage && ( // now checks both /join and /shared/*
               <>
                 <NavLink to="/login" className={getNavLinkClass} style={navLinkStyle}>
                   Login
