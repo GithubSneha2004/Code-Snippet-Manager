@@ -1,10 +1,13 @@
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom'; // added useLocation
 import Auth from '../utils/auth';
 
 export default function Navbarhome() {
+  const location = useLocation(); // get current path
+  const isJoinPage = location.pathname === '/join'; // check if current path is /join
+
   const getNavLinkClass = ({ isActive }) =>
     `nav-link px-3 py-2 mx-1 rounded-pill fw-medium ${
       isActive ? 'bg-warning text-dark' : 'text-light'
@@ -57,7 +60,7 @@ export default function Navbarhome() {
                   Logout
                 </NavLink>
               </>
-            ) : (
+            ) : !isJoinPage && (
               <>
                 <NavLink to="/login" className={getNavLinkClass} style={navLinkStyle}>
                   Login
